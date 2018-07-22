@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <title>Game</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css"/>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <h1>Player 1</h1>
+          <h2>Points: <span id="playerpoints"></span></h2>
+          <div class="card">
+            <h5 class="card-title">Token Conversions</h5>
+            <h6 class="card-text">
+              1 Token  = 100pts <br>
+              2 Tokens = 105pts <br>
+              3 Tokens = 110pts <br>
+              4 Tokens = 115pts <br>
+              5 Tokens = 120pts <br> 
+            </h6>
+          </div>
+          <br>
+          <div class="bank card">
+            <h5 class="card-title">Bank</h5>
+            <div id="playerbank"></div>
+          </div>
+        </div>
+        <div class="col-sm-6 justify-content-center">
+          <img id="stoplight" class='stoplight' src='images/red.jpg'>
+          <button id="startbutton" class="btn btn-lg btn-primary">Start Round</button>
+          <button id="gobutton" class="btn btn-lg btn-success">GO!</button>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="modelTitleId">You Won!</h4>
+              </div>
+              <div class="modal-body">
+                Use Token will set your opponent back by one token, reducing the amount of points they get from winning <br>
+                Save Token will save your token in your bank, increasing the amount of points you get from winning <br>
+              </div>
+              <div class="modal-footer">
+                <button id='savetoken' class='btn btn-primary'>Save Token</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Cash in
+                  </button>
+                  <div id="cashintoken" class="tokenmenu dropdown-menu">
+                  </div>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Spend
+                  </button>
+                  <div id="spendtoken" class="tokenmenu dropdown-menu">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="loseModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modelTitleId">You Lost!</h4>
+                </div>
+                <div class="modal-body">
+                  Waiting for the other player to make a desicion...
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="col-sm">
+          <h1>Player 2</h1>
+          <h2>Points: <span id="compoints"></span></h2>
+          <div class="card">
+            <h5 class="card-title">Token Conversions</h5>
+            <h6 class="card-text" style='justify-content: center;'>
+              1 Token  = 100pts <br>
+              2 Tokens = 105pts <br>
+              3 Tokens = 110pts <br>
+              4 Tokens = 115pts <br>
+              5 Tokens = 120pts <br> 
+            </h6>
+          </div>
+          <br>
+          <div class="bank card">
+            <h5 class="card-title">Bank</h5>
+            <div id="combank"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

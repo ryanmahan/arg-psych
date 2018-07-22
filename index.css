@@ -1,0 +1,23 @@
+.bank {
+  display: inline-block;
+  width: 100%;
+}
+
+.token {
+  margin: 0% .05em;
+  height: 2.5em;
+  width: 2.5em;
+}
+
+.stoplight {
+  height: 50%;
+  width: 50%;
+  margin: 5% auto;
+  justify-content: center;
+  display: block;
+}
+
+.modal-backdrop
+{
+    opacity:0 !important;
+}
