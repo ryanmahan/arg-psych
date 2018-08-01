@@ -1,5 +1,6 @@
 // TRIAL VARIABLES
 
+// starting values
 var player = {
   tokens: 0,
   points: 5000,
@@ -12,9 +13,11 @@ var com = {
   id: "com"
 }
 
+// changing this number can cause issues with the display of the token bank
+// FIXME: Display issues with token bank with variable token amounts, low priority
 const maxTokens = 5
-const rounds = 5
 
+// list of dictionaries with the win rate of the computer, and the action/amount that the computer takes
 var computerPlay = [
   {win: false, action: null},
   {win: true, action: "spend", amount: 1},
@@ -26,9 +29,6 @@ var computerPlay = [
 function tokenConversion(amount) {
   return (95 + amount * 5) * amount
 }
-
-// FORM INPUT
-
 
 
 // GAME LOGIC
@@ -44,7 +44,7 @@ function changeLight(color) {
   $("#stoplight").attr('src', path)
 }
 
-// updates HTML for tokens
+// updates HTML for token banks and token dropdowns
 function updateTokens(actor, amount=0) {
   actor.tokens += amount
   let html = ""
@@ -68,6 +68,7 @@ function updatePoints(actor, amount) {
   tokenMenuMaker()
 }
 
+// helper function to make dropdown menus for the token spend menu, and to init the button listeners
 function tokenMenuMaker() {
   $(".tokenmenu").empty()
   var html =""
@@ -109,6 +110,7 @@ function tokenMenuMaker() {
   })
 }
 
+// computerWin works off the of the dictionary supplied by the researcher, a set win amount and action for each round the computer wins
 function computerWin(action, amount) {
   console.log(action)
   var points = 0
@@ -141,6 +143,7 @@ function startRound() {
 
 
 $(document).ready(function () {
+  // show form and take in variables inputted by researcher
   $("#form").show()
   var playername;
   $("#formsubmit").click(function () {
@@ -151,6 +154,7 @@ $(document).ready(function () {
     $("#readyModal").modal("show")
   })
 
+  // button when the user is ready to play
   $("#readybutton").click(function() {
     $("#readyModal").modal("hide")
     startRound()
@@ -164,17 +168,19 @@ $(document).ready(function () {
   updateTokens(com)
   $(".tokenmenu").dropdown();
 
+  // button clicked (supposedly) after light is green and round has started, user either wins/loses based on this button
   $("#gobutton").click(function () {
-    if (greenTime === 0) {
-      alert("Click \"Start Round\" before pressing go")
-      return
-    }
     if ($("#stoplight").attr('src') !== "images/green.jpg") {
       alert("You clicked too early! Try again")
       return
     }
 
-    if (computerPlay[trial].win) {
+    var responseTime = Date.now() - greenTime
+
+    // computerPlay set up in dictionary, plus response time over 1 sec is a loss
+    // TODO: Logic for action > 1sec response time that doesnt mess up researcher set dictionary (get token spend token)
+    if (computerPlay[trial].win || responseTime > 1000) {
+      // computer wins
       console.log(trial)
       $("#loseModal").modal("show")
       let tout = getRandomIntInclusive(1000, 2500)
@@ -191,19 +197,11 @@ $(document).ready(function () {
       )
       changeLight("red")
     } else {
-      var responseTime = Date.now() - greenTime
-      if (responseTime < 1000) {
-        updateTokens(player, 1)
-        $("#winModal").modal('show')
-        changeLight("red")
-      }
-      
+      // player wins, player chooses action, round resets to red
+      updateTokens(player, 1)
+      $("#winModal").modal('show')
+      changeLight("red")
     }
-
-    //  player wins
-
     trial++
   })
-
-  
 })
