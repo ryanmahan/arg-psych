@@ -9,20 +9,57 @@
     <script src="index.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div id="form" class="container">
+      <br>
+      <div class="card card-outline-secondary">
+        <div class="card-header">
+            <h3 class="mb-0">ARG!</h3>
+        </div>
+        <div class="card-body">
+          <form class="form" role="form" autocomplete="off">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Player Name</label>
+                <div class="col-lg-9">
+                    <input id="name" class="form-control" type="text" placeholder="Name...">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Participant ID</label>
+                <div class="col-lg-9">
+                    <input id="id" class="form-control" type="text" placeholder="1234">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Experimenter</label>
+                <div class="col-lg-9">
+                    <input id="expirimenter" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label"></label>
+                <div class="col-lg-9">
+                    <input type="reset" class="btn btn-secondary" value="Cancel">
+                    <input type="button" id="formsubmit" class="btn btn-primary" value="Save Changes">
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="game" style="display: none;">
       <div class="row">
         <div class="col-sm">
           <h1>Player 1</h1>
           <h2>Points: <span id="playerpoints"></span></h2>
           <div class="card">
-            <h5 class="card-title">Token Conversions</h5>
-            <h6 class="card-text">
-              1 Token  = 100pts <br>
-              2 Tokens = 105pts <br>
-              3 Tokens = 110pts <br>
-              4 Tokens = 115pts <br>
-              5 Tokens = 120pts <br> 
-            </h6>
+            <h4 class="card-title">Token Conversions</h4>
+            <h5>
+              1 X <img class='token' src='images/token.png'/> = 100pts <br>
+              2 X <img class='token' src='images/token.png'/> = 105pts <br>
+              3 X <img class='token' src='images/token.png'/> = 110pts <br>
+              4 X <img class='token' src='images/token.png'/> = 115pts <br>
+              5 X <img class='token' src='images/token.png'/> = 120pts <br> 
+            </h5>
           </div>
           <br>
           <div class="bank card">
@@ -30,9 +67,8 @@
             <div id="playerbank"></div>
           </div>
         </div>
-        <div class="col-sm-6 justify-content-center">
+        <div class="col-sm-6 justify-content-center text-center">
           <img id="stoplight" class='stoplight' src='images/red.jpg'>
-          <button id="startbutton" class="btn btn-lg btn-primary">Start Round</button>
           <button id="gobutton" class="btn btn-lg btn-success">GO!</button>
         </div>
         <!-- Modal -->
@@ -66,7 +102,7 @@
             </div>
           </div>
         </div>
-
+  
         <div class="modal fade" id="loseModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -79,24 +115,43 @@
               </div>
             </div>
           </div>
-
+  
         <div class="col-sm">
           <h1>Player 2</h1>
           <h2>Points: <span id="compoints"></span></h2>
           <div class="card">
-            <h5 class="card-title">Token Conversions</h5>
-            <h6 class="card-text" style='justify-content: center;'>
-              1 Token  = 100pts <br>
-              2 Tokens = 105pts <br>
-              3 Tokens = 110pts <br>
-              4 Tokens = 115pts <br>
-              5 Tokens = 120pts <br> 
-            </h6>
+            <h4 class="card-title">Token Conversions</h4>
+            <h5>
+              1 X <img class='token' src='images/token.png'/> = 100pts <br>
+              2 X <img class='token' src='images/token.png'/> = 105pts <br>
+              3 X <img class='token' src='images/token.png'/> = 110pts <br>
+              4 X <img class='token' src='images/token.png'/> = 115pts <br>
+              5 X <img class='token' src='images/token.png'/> = 120pts <br> 
+            </h5>
           </div>
           <br>
           <div class="bank card">
             <h5 class="card-title">Bank</h5>
             <div id="combank"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="readyModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Start Game</h4>
+          </div>
+          <div class="modal-body">
+            Press Ready to ready up!
+          </div>
+          <div class="modal-footer">
+            <div class="btn-group">
+              <button id="readybutton" type="button" class="btn btn-success">
+                Ready
+              </button>
+            </div>
           </div>
         </div>
       </div>

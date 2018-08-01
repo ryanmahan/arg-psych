@@ -21,3 +21,13 @@
 {
     opacity:0 !important;
 }
+
+.row {
+  margin-right: 1%;
+  margin-left: 1%;
+}
+
+#gobutton {
+  height: 150px;
+  width: 300px;
+}

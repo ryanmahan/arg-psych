@@ -27,6 +27,9 @@ function tokenConversion(amount) {
   return (95 + amount * 5) * amount
 }
 
+// FORM INPUT
+
+
 
 // GAME LOGIC
 
@@ -36,14 +39,9 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
-function changeLight() {
-  if ($("#stoplight").attr('src') === 'images/red.jpg') {
-    $("#stoplight").attr('src', 'images/yellow.jpg')
-  } else if ($("#stoplight").attr('src') === 'images/yellow.jpg') {
-    $("#stoplight").attr('src', 'images/green.jpg')
-  } else if ($("#stoplight").attr('src') === 'images/green.jpg') {
-    $("#stoplight").attr('src', 'images/red.jpg')
-  }
+function changeLight(color) {
+  let path = 'images/' + color + '.jpg'
+  $("#stoplight").attr('src', path)
 }
 
 // updates HTML for tokens
@@ -81,6 +79,15 @@ function tokenMenuMaker() {
     }
   }
 
+  $("#savetoken").click(function () {
+    if (player.tokens >= maxTokens) {
+      alert("Your bank is full")
+    } else {
+      $("#winModal").modal('hide')
+      startRound()
+    }
+  })
+
   $("#spendtoken a").click(function () {
     console.log('clicked')
     let amount = $(this).index()+1
@@ -88,6 +95,7 @@ function tokenMenuMaker() {
     updateTokens(player, (amount-1) * -1)
     updatePoints(com, points * -1)
     $("#winModal").modal('hide')
+    startRound()
   })
 
   $("#cashintoken a").click(function () {
@@ -97,6 +105,7 @@ function tokenMenuMaker() {
     updateTokens(player, amount * -1)
     updatePoints(player, points)
     $("#winModal").modal('hide')
+    startRound()
   })
 }
 
@@ -118,10 +127,35 @@ function computerWin(action, amount) {
     updateTokens(com, (amount-1) * -1)
     updatePoints(player, points * -1)
   }
+  startRound()
+}
+
+function startRound() {
+  let interval1 = getRandomIntInclusive(500, 1000)
+  let interval2 = getRandomIntInclusive(500, 1000)
+  interval2 += interval1
+  greenTime = Date.now() + interval2
+  setTimeout(changeLight, interval1, ["yellow"])
+  setTimeout(changeLight, interval2, ["green"])
 }
 
 
 $(document).ready(function () {
+  $("#form").show()
+  var playername;
+  $("#formsubmit").click(function () {
+    // TODO: Save variables from this
+    var playername = $("name").val()
+    $("#form").hide()
+    $("#game").show()
+    $("#readyModal").modal("show")
+  })
+
+  $("#readybutton").click(function() {
+    $("#readyModal").modal("hide")
+    startRound()
+  })
+
   // initialize dynamic HTML parts
   var trial = 0
   $("#playerpoints").text(player.points)
@@ -130,14 +164,6 @@ $(document).ready(function () {
   updateTokens(com)
   $(".tokenmenu").dropdown();
 
-  var greenTime;
-  $("#startbutton").click(function () {
-    let interval1 = getRandomIntInclusive(250, 1500)
-    let interval2 = getRandomIntInclusive(250, 1500)
-    greenTime = Date.now() + interval2
-    setTimeout(changeLight, interval1)
-    setTimeout(changeLight, interval2)
-  })
   $("#gobutton").click(function () {
     if (greenTime === 0) {
       alert("Click \"Start Round\" before pressing go")
@@ -163,13 +189,13 @@ $(document).ready(function () {
         () => {$("#loseModal").modal("hide")},
         tout
       )
-      changeLight()
+      changeLight("red")
     } else {
       var responseTime = Date.now() - greenTime
       if (responseTime < 1000) {
         updateTokens(player, 1)
         $("#winModal").modal('show')
-        changeLight()
+        changeLight("red")
       }
       
     }
@@ -179,11 +205,5 @@ $(document).ready(function () {
     trial++
   })
 
-  $("#savetoken").click(function () {
-    if (player.tokens >= maxTokens) {
-      alert("Your bank is full")
-    } else {
-      $("#winModal").modal('hide')
-    }
-  })
+  
 })
