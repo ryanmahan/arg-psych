@@ -26,12 +26,25 @@ var computerPlay = [
   {win: false, action: "save"}
 ]
 
+// token conversion formula, amount being the amount of tokens spent, returns a number
 function tokenConversion(amount) {
   return (95 + amount * 5) * amount
 }
 
+// define when the player is allowed to send a message, takes in trial number returns true/false
+function sendmessage(trial) {
+  return (trial%5 === 0 && trial !== 0)
+}
+
 
 // GAME LOGIC
+
+// Stores all results from all rounds
+var results = []
+// Stores results from current round
+var result = {}
+
+var trial = 0
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -48,7 +61,6 @@ function changeLight(color) {
 function updateTokens(actor, amount=0) {
   actor.tokens += amount
   let html = ""
-  console.log(actor.tokens)
   for(let i = 0 ; i < actor.tokens ; i++) {
     html += "<img class='token' src='images/token.png'> \n"
   }
@@ -80,61 +92,77 @@ function tokenMenuMaker() {
     }
   }
 
-  $("#savetoken").click(function () {
-    if (player.tokens >= maxTokens) {
-      alert("Your bank is full")
-    } else {
-      $("#winModal").modal('hide')
-      startRound()
-    }
-  })
-
-  $("#spendtoken a").click(function () {
-    console.log('clicked')
+  $("#spendtoken a").one('click', function () {   
     let amount = $(this).index()+1
     let points = tokenConversion(amount)
+    result.amount = amount * -1
+    result.action = "spend"
     updateTokens(player, (amount-1) * -1)
     updatePoints(com, points * -1)
-    $("#winModal").modal('hide')
-    startRound()
+    postAction()
   })
 
-  $("#cashintoken a").click(function () {
+  $("#cashintoken a").one('click', function () {
     let amount = $(this).index()+1
     let points = tokenConversion(amount)
-    console.log(points)
+    result.amount = amount
+    result.action = "cash in"
     updateTokens(player, amount * -1)
     updatePoints(player, points)
-    $("#winModal").modal('hide')
-    startRound()
+    postAction()
   })
+}
+
+function postAction() {
+  $("#winModal").modal('hide')
+  result.playerposttokens = player.tokens
+  result.playerpostpoints = player.points
+  result.computerposttokens = com.tokens
+  result.computerpostpoints = com.points
+  startRound()
 }
 
 // computerWin works off the of the dictionary supplied by the researcher, a set win amount and action for each round the computer wins
 function computerWin(action, amount) {
-  console.log(action)
+  // TODO: Announce computer action
+  result.action = action
   var points = 0
   if (action === "save") {
     updateTokens(com, 1)
+    result.amount = 0
   }
     
   if (action === "cashin") {
     points = tokenConversion(amount)
     updateTokens(com, amount * -1)
     updatePoints(com, points)
+    result.amount = amount
   }
     
   if (action === "spend") {
     points = tokenConversion(amount)
     updateTokens(com, (amount-1) * -1)
     updatePoints(player, points * -1)
+    result.amount = (amount-1) * -1
   }
+  result.playerposttokens = player.tokens
+  result.playerpostpoints = player.points
+  result.computerposttokens = com.tokens
+  result.computerpostpoints = com.points
+  
   startRound()
 }
 
 function startRound() {
-  let interval1 = getRandomIntInclusive(500, 1000)
-  let interval2 = getRandomIntInclusive(500, 1000)
+  results.push(result)
+  result = {}
+  if (computerPlay.length === trial) {
+    // TODO Post-game form
+    console.log(results)
+    endGame()
+  }
+  let interval1 = getRandomIntInclusive(750, 1250)
+  let interval2 = getRandomIntInclusive(750, 1250)
   interval2 += interval1
   greenTime = Date.now() + interval2
   setTimeout(changeLight, interval1, ["yellow"])
@@ -145,10 +173,19 @@ function startRound() {
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
   $("#form").show()
-  var playername;
+
+  // set com name
+  $('#comdrop').change(function () {
+    $("#comname").text($('#comdrop option:selected').text())
+    result.comname = $('#comdrop option:selected').text()
+  })  
+
   $("#formsubmit").click(function () {
     // TODO: Save variables from this
-    var playername = $("name").val()
+    $("#playername").text($("#name").val())
+    result.playername = $("#name").val()
+    result.id = $("#id").val()
+    result.expirimenter = $("#expirimenter").val()
     $("#form").hide()
     $("#game").show()
     $("#readyModal").modal("show")
@@ -161,7 +198,7 @@ $(document).ready(function () {
   })
 
   // initialize dynamic HTML parts
-  var trial = 0
+
   $("#playerpoints").text(player.points)
   $("#compoints").text(com.points)
   updateTokens(player)
@@ -176,15 +213,19 @@ $(document).ready(function () {
     }
 
     var responseTime = Date.now() - greenTime
+    result.responseTime = responseTime
+    result.playerpretokens = player.tokens
+    result.computerpretokens = com.tokens
+    result.playerprepoints = player.points
+    result.computerprepoints = com.points
 
     // computerPlay set up in dictionary, plus response time over 1 sec is a loss
     // TODO: Logic for action > 1sec response time that doesnt mess up researcher set dictionary (get token spend token)
-    if (computerPlay[trial].win || responseTime > 1000) {
+    if (computerPlay[trial].win || responseTime > 1200) {
+      result.winner = "computer"
       // computer wins
-      console.log(trial)
       $("#loseModal").modal("show")
       let tout = getRandomIntInclusive(1000, 2500)
-      console.log(tout)
       window.setTimeout(
         computerWin,
         tout,
@@ -198,10 +239,51 @@ $(document).ready(function () {
       changeLight("red")
     } else {
       // player wins, player chooses action, round resets to red
+      result.winner = "participant"
       updateTokens(player, 1)
       $("#winModal").modal('show')
       changeLight("red")
     }
+    result.trial = trial
     trial++
+
+    $("#savetoken").one('click', function () {
+      result.action = "save"
+      result.amount = 0
+      if (player.tokens >= maxTokens) {
+        alert("Your bank is full")
+      } else {
+        postAction()
+      }
+    })
+
+    if (sendmessage(trial)) {
+      $("#textmodal").modal("show")
+    }
+
+    $("#sendmessage").click(function () {
+      var text = $("#message").val()
+      result.message = text
+      $("#textmodal").modal("hide")
+    })
+
   })
 })
+
+function endGame() {
+  console.log(results)
+  var csv = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter
+
+  csv += 'Trial,Outcome,Response,RT,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
+          Player Points Post-Response, Player Text, Computer Points Pre-response, Computer Points post-response\n';
+  results.forEach(function(result) {
+    csv += [results.trial, results.amount, results.responseTime, results.playerpretokens, results.playerposttokens,
+            results.playerprepoints, results.playerpostpoints, results.message, results.computerprepoints, results.computerpostpoints].join(',')
+    csv += "\n";
+  });
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = results[0].id + '.csv';
+    hiddenElement.click();
+}

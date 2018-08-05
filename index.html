@@ -9,6 +9,7 @@
     <script src="index.js"></script>
   </head>
   <body>
+    <!-- pre-game form HTML -->
     <div id="form" class="container">
       <br>
       <div class="card card-outline-secondary">
@@ -36,20 +37,32 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label"></label>
-                <div class="col-lg-9">
-                    <input type="reset" class="btn btn-secondary" value="Cancel">
-                    <input type="button" id="formsubmit" class="btn btn-primary" value="Save Changes">
-                </div>
+              <label class="col-lg-3 col-form-label form-control-label">Opponent Name</label>
+              <select class="custom-select col-lg-9" id="comdrop">
+                <option selected>Choose Com Name</option>
+                <option value="One">One</option>
+                <option value="Two">Two</option>
+                <option value="Three">Three</option>
+              </select>
+            </div>
+            <br>
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-9">
+                <input type="reset" class="btn btn-secondary" value="Cancel">
+                <input type="button" id="formsubmit" class="btn btn-primary" value="Save Changes">
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
+    <!-- GAME HTML -->
     <div id="game" style="display: none;">
       <div class="row">
+        <!-- Participant playerinfo column-->
         <div class="col-sm">
-          <h1>Player 1</h1>
+          <h1 id='playername' >Player 1</h1>
           <h2>Points: <span id="playerpoints"></span></h2>
           <div class="card">
             <h4 class="card-title">Token Conversions</h4>
@@ -67,57 +80,14 @@
             <div id="playerbank"></div>
           </div>
         </div>
+        <!-- Center Game Column -->
         <div class="col-sm-6 justify-content-center text-center">
           <img id="stoplight" class='stoplight' src='images/red.jpg'>
           <button id="gobutton" class="btn btn-lg btn-success">GO!</button>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="modelTitleId">You Won!</h4>
-              </div>
-              <div class="modal-body">
-                Use Token will set your opponent back by one token, reducing the amount of points they get from winning <br>
-                Save Token will save your token in your bank, increasing the amount of points you get from winning <br>
-              </div>
-              <div class="modal-footer">
-                <button id='savetoken' class='btn btn-primary'>Save Token</button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Cash in
-                  </button>
-                  <div id="cashintoken" class="tokenmenu dropdown-menu">
-                  </div>
-                </div>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Spend
-                  </button>
-                  <div id="spendtoken" class="tokenmenu dropdown-menu">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div class="modal fade" id="loseModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="modelTitleId">You Lost!</h4>
-                </div>
-                <div class="modal-body">
-                  Waiting for the other player to make a desicion...
-                </div>
-              </div>
-            </div>
-          </div>
-  
+        <!-- Computer Playerinfo column -->
         <div class="col-sm">
-          <h1>Player 2</h1>
+          <h1 id="comname">Player 2</h1>
           <h2>Points: <span id="compoints"></span></h2>
           <div class="card">
             <h4 class="card-title">Token Conversions</h4>
@@ -137,6 +107,51 @@
         </div>
       </div>
     </div>
+    <!-- Winning Choices Modal -->
+    <div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modelTitleId">You Won!</h4>
+          </div>
+          <div class="modal-body">
+            Use Token will set your opponent back by one token, reducing the amount of points they get from winning <br>
+            Save Token will save your token in your bank, increasing the amount of points you get from winning <br>
+          </div>
+          <div class="modal-footer">
+            <button id='savetoken' class='btn btn-primary'>Save Token</button>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Cash in
+              </button>
+              <div id="cashintoken" class="tokenmenu dropdown-menu">
+              </div>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Spend
+              </button>
+              <div id="spendtoken" class="tokenmenu dropdown-menu">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- You lost! Modal -->
+    <div class="modal fade" id="loseModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="modelTitleId">You Lost!</h4>
+          </div>
+          <div class="modal-body">
+            Waiting for the other player to make a desicion...
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ready up Modal -->
     <div class="modal fade" id="readyModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -152,6 +167,26 @@
                 Ready
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Text Message Modal -->
+    <div class="modal fade" id="textmodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Send a message to <span id="comname"></span></h4>
+          </div>
+          <div class="modal-body">
+            $<div class="form-group">
+              <label for="">Message</label>
+              <textarea class="form-control" name="" id="message" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="sendmessage">Send</button>
           </div>
         </div>
       </div>
