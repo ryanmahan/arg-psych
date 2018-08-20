@@ -23,7 +23,8 @@ var computerPlay = [
   {win: true, action: "spend", amount: 1},
   {win: true, action: "save"},
   {win: false, action: "save"},
-  {win: false, action: "save"}
+  {win: false, action: "save"},
+  {win: false, action: "spend", amount: 2}
 ]
 
 // token conversion formula, amount being the amount of tokens spent, returns a number
@@ -45,6 +46,9 @@ var results = []
 var result = {}
 
 var trial = 0
+
+var t1 = 0
+var t2 = 0
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -93,16 +97,18 @@ function tokenMenuMaker() {
   }
 
   $("#spendtoken a").one('click', function () {   
+    t2 = Date.now()
     let amount = $(this).index()+1
     let points = tokenConversion(amount)
     result.amount = amount * -1
     result.action = "spend"
-    updateTokens(player, (amount-1) * -1)
+    updateTokens(player, amount * -1)
     updatePoints(com, points * -1)
     postAction()
   })
 
   $("#cashintoken a").one('click', function () {
+    t2 = Date.now()
     let amount = $(this).index()+1
     let points = tokenConversion(amount)
     result.amount = amount
@@ -119,6 +125,7 @@ function postAction() {
   result.playerpostpoints = player.points
   result.computerposttokens = com.tokens
   result.computerpostpoints = com.points
+  result.responseTime = t2-t1
   startRound()
 }
 
@@ -172,7 +179,7 @@ function startRound() {
 
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
-  $("#form").show()
+  $("#pregame").show()
 
   // set com name
   $('#comdrop').change(function () {
@@ -186,7 +193,7 @@ $(document).ready(function () {
     result.playername = $("#name").val()
     result.id = $("#id").val()
     result.expirimenter = $("#expirimenter").val()
-    $("#form").hide()
+    $("#pregame").hide()
     $("#game").show()
     $("#readyModal").modal("show")
   })
@@ -241,6 +248,7 @@ $(document).ready(function () {
       // player wins, player chooses action, round resets to red
       result.winner = "participant"
       updateTokens(player, 1)
+      t1 = Date.now()
       $("#winModal").modal('show')
       changeLight("red")
     }
@@ -250,6 +258,7 @@ $(document).ready(function () {
     $("#savetoken").one('click', function () {
       result.action = "save"
       result.amount = 0
+      t2 = Date.now()
       if (player.tokens >= maxTokens) {
         alert("Your bank is full")
       } else {
@@ -270,20 +279,35 @@ $(document).ready(function () {
   })
 })
 
-function endGame() {
-  console.log(results)
-  var csv = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter
+function format(results) {
+  var csv = 'Trial,Outcome,Response Time,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
+          Player Points Post-Response, Player Text, Computer Points Pre-response, Computer Points post-response\n'
 
-  csv += 'Trial,Outcome,Response,RT,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
-          Player Points Post-Response, Player Text, Computer Points Pre-response, Computer Points post-response\n';
   results.forEach(function(result) {
-    csv += [results.trial, results.amount, results.responseTime, results.playerpretokens, results.playerposttokens,
-            results.playerprepoints, results.playerpostpoints, results.message, results.computerprepoints, results.computerpostpoints].join(',')
+    csv += [result.trial, result.amount, result.responseTime, result.playerpretokens, result.playerposttokens,
+            result.playerprepoints, result.playerpostpoints, result.message, result.computerprepoints, result.computerpostpoints].join(',')
     csv += "\n";
-  });
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = results[0].id + '.csv';
-    hiddenElement.click();
+  })
+  return csv
 }
+
+async function endGame() {
+  $("#game").hide()
+  $("#postgame").show()
+
+}
+
+$("#postgamesubmit").click(() => {
+
+  
+
+  let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
+
+  data += await format(results)
+
+  var hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = results[0].id + '.csv';
+  hiddenElement.click();
+})
