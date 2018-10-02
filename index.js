@@ -16,6 +16,7 @@ var com = {
 // changing this number can cause issues with the display of the token bank
 // FIXME: Display issues with token bank with variable token amounts, low priority
 const maxTokens = 5
+computerName = "Dorothy"
 
 // list of dictionaries with the win rate of the computer, and the action/amount that the computer takes
 var computerPlay = [
@@ -182,10 +183,11 @@ $(document).ready(function () {
   $("#pregame").show()
 
   // set com name
-  $('#comdrop').change(function () {
-    $("#comname").text($('#comdrop option:selected').text())
-    result.comname = $('#comdrop option:selected').text()
-  })  
+  $("#comname").text(computerName)
+  // $('#comdrop').change(function () {
+  //   $("#comname").text($('#comdrop option:selected').text())
+  //   result.comname = $('#comdrop option:selected').text()
+  // })  
 
   $("#formsubmit").click(function () {
     // TODO: Save variables from this
