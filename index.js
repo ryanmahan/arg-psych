@@ -297,7 +297,7 @@ async function endGame() {
 
 }
 
-$("#postgamesubmit").click(() => {
+$("#postgamesubmit").click(async () => {
 
   
 
