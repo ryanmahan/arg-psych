@@ -279,6 +279,19 @@ $(document).ready(function () {
     })
 
   })
+
+  $("#postgamesubmit").click(function () {
+    console.log("clicked")
+    let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
+  
+    data += format(results)
+    console.log("downloading")
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = results[0].id + '.csv';
+    hiddenElement.click();
+  })
 })
 
 function format(results) {
@@ -296,20 +309,5 @@ function format(results) {
 async function endGame() {
   $("#game").hide()
   $("#postgame").show()
-
 }
 
-$("#postgamesubmit").click(async () => {
-
-  
-
-  let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
-
-  data += await format(results)
-
-  var hiddenElement = document.createElement('a');
-  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
-  hiddenElement.target = '_blank';
-  hiddenElement.download = results[0].id + '.csv';
-  hiddenElement.click();
-})
