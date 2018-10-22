@@ -200,43 +200,235 @@
         </div>
         <div class="card-body">
           <form class="form" role="form" autocomplete="off">
-            <!-- <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Player Name</label>
-                <div class="col-lg-9">
-                    <input id="name" class="form-control" type="text" placeholder="Name...">
-                </div>
+            <div class="row text-center">
+              <div class="col-lg-1"></div>
+              <h6 class="col-lg-2">1 - Slightly or not at all</h6>
+              <h6 class="col-lg-2">2 - A little</h6>
+              <h6 class="col-lg-2">3 - Moderately</h6>
+              <h6 class="col-lg-2">4 - Quite a bit</h6>
+              <h6 class="col-lg-2">5 - Extremely</h6>
+              <div class="col-lg-1"></div>
             </div>
+            <br>
+            <h6 class="text-center">We would like to know about your experience playing this game. Please answer these questions.</h6>
             <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Participant ID</label>
-                <div class="col-lg-9">
-                    <input id="id" class="form-control" type="text" placeholder="1234">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label form-control-label">Experimenter</label>
-                <div class="col-lg-9">
-                    <input id="expirimenter" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label">Opponent Name</label>
-              <select class="custom-select col-lg-9" id="comdrop">
-                <option selected>Choose Com Name</option>
-                <option value="One">One</option>
-                <option value="Two">Two</option>
-                <option value="Three">Three</option>
-              </select>
-            </div>
-            <br> -->
-            <div class="form-group row">
-              <label class="col-lg-3 col-form-label form-control-label"></label>
-              <div class="col-lg-9">
-                <input type="button" id="postgamesubmit" class="btn btn-primary" value="Submit">
+              <div class="col-lg-8 form-label">How <strong>frustrated</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="frustrated" value=1><label for="" class="form-check-label">1</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="frustrated" value=2><label for="" class="form-check-label">2</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="frustrated" value=3><label for="" class="form-check-label">3</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="frustrated" value=4><label for="" class="form-check-label">4</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="frustrated" value=5><label for="" class="form-check-label">5</label></div>
               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>happy</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="happy" value=1><label for="" class="form-check-label">1</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="happy" value=2><label for="" class="form-check-label">2</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="happy" value=3><label for="" class="form-check-label">3</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="happy" value=4><label for="" class="form-check-label">4</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="happy" value=5><label for="" class="form-check-label">5</label></div>
+                </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>confident</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="confident" value=1><label for="" class="form-check-label">1</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="confident" value=2><label for="" class="form-check-label">2</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="confident" value=3><label for="" class="form-check-label">3</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="confident" value=4><label for="" class="form-check-label">4</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="confident" value=5><label for="" class="form-check-label">5</label></div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>angry</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="angry" value=1><label for="" class="form-check-label">1</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="angry" value=2><label for="" class="form-check-label">2</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="angry" value=3><label for="" class="form-check-label">3</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="angry" value=4><label for="" class="form-check-label">4</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="angry" value=5><label for="" class="form-check-label">5</label></div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>satisfied</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="satisfied" value=1><label class="form-check-label">1</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="satisfied" value=2><label class="form-check-label">2</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="satisfied" value=3><label class="form-check-label">3</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="satisfied" value=4><label class="form-check-label">4</label></div>
+                  <div class="form-check form-check-inline"><input type="radio" class="form-check-input" id="satisfied" value=5><label class="form-check-label">5</label></div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>confused</strong> did you feel playing this game?</div>
+              <div class="col-lg-4">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="confused" value=1>
+                    <label class="form-check-label">1</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="confused" value=2>
+                    <label class="form-check-label">2</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="confused" value=3>
+                    <label class="form-check-label">3</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="confused" value=4>
+                    <label class="form-check-label">4</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="confused" value=5>
+                    <label class="form-check-label">5</label>
+                  </div>
+              </div>
+            </div>
+            <h6 class="text-center">The following questions are about the person with whom you were playing.</h6>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>trustworthy</strong> did you find the other person?</div>
+              <div class="col-lg-4">
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="trustworthy" value=1>
+                  <label class="form-check-label">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="trustworthy" value=2>
+                  <label class="form-check-label">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="trustworthy" value=3>
+                  <label class="form-check-label">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="trustworthy" value=4>
+                  <label class="form-check-label">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="trustworthy" value=5>
+                  <label class="form-check-label">5</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>friendly</strong> did you find the other person?</div>
+              <div class="col-lg-4">
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="friendly" value=1>
+                  <label for="" class="form-check-label">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="friendly" value=2>
+                  <label for="" class="form-check-label">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="friendly" value=3>
+                  <label for="" class="form-check-label">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="friendly" value=4>
+                  <label for="" class="form-check-label">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" class="form-check-input" id="friendly" value=5>
+                  <label for="" class="form-check-label">5</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>smart</strong> did you find the other person?</div>
+              <div class="col-lg-4">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="smart" value=1>
+                  <label class="form-check-label">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="smart" value=2>
+                  <label class="form-check-label">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="smart" value=3>
+                  <label class="form-check-label">3 </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="smart" value=4>
+                  <label class="form-check-label">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="smart" value=5>
+                  <label class="form-check-label">5 </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-8 form-label">How <strong>fair</strong> did you find the other person?</div>
+              <div class="col-lg-4">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="fair" value=1>
+                  <label class="form-check-label" for="inlineRadio1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="fair" value=2>
+                  <label class="form-check-label" for="inlineRadio2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="fair" value=3>
+                  <label class="form-check-label" for="inlineRadio3">3 </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="fair" value=4>
+                  <label class="form-check-label" for="inlineRadio2">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="fair" value=5>
+                  <label class="form-check-label" for="inlineRadio3">5 </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-4 form-label">I thought the other person was</div>
+              <div class="col-lg-8">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="identity" value="Male">
+                  <label class="form-check-label" for="inlineRadio1">A male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="identity" value="Female">
+                  <label class="form-check-label" for="inlineRadio2">A female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="identity" value="Male or Female">
+                  <label class="form-check-label" for="inlineRadio3">A male or female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="identity" value="Multiple People">
+                  <label class="form-check-label" for="inlineRadio2">Multiple people</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="identity" value="Computer">
+                  <label class="form-check-label" for="inlineRadio3">A computer</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <input type="button" id="postgamesubmit" class="btn btn-primary" value="Submit">
             </div>
           </form>
         </div>
       </div>
+    </div>
+    <div id="debriefing" style="display: none;">
+      <p class="text-center"> <span class="display-3">Debriefing</span><br><br>
+        We asked you to play this game to help us learn about differences in the ways that people deal with being frustrated
+        by others. Even though we said you were playing against another person, you were really playing against the computer. The reason is we needed everyone to have EXACTLY THE SAME game experience. If a real person played against you, everyone's experience would be difference because you could get a really mean person and someone else could get a really nice person. Sometimes people play differently against a real person compared to against a computer. That's why we couldn't tell you that you were playing against the computer.
+        <br>
+        This is the ONLY part of this study that involves deception. The only thing that we ask is that you do not share this
+        information with anyone because it is very important that everyone in our study believes that there are real people
+        involved. If you have any questions or worries, please let us know; we would like very much to discuss this with you
+        and do what we can to make sure you are comfortable with this information.
+      </p>
     </div>
   </body>
 </html>

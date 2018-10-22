@@ -180,7 +180,7 @@ function startRound() {
 
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
-  $("#pregame").show()
+  $("#postgame").show()
 
   // set com name
   $("#comname").text(computerName)
@@ -281,11 +281,11 @@ $(document).ready(function () {
   })
 
   $("#postgamesubmit").click(function () {
-    console.log("clicked")
     let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
   
     data += format(results)
-    console.log("downloading")
+    data += getPostGameForm()
+
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
     hiddenElement.target = '_blank';
@@ -306,7 +306,19 @@ function format(results) {
   return csv
 }
 
-async function endGame() {
+function getPostGameForm() {
+  data = "\n Post Game Form Answers \n"
+  let ids = ["frustrated", "happy", "confident", "angry", "satisfied", "confused",
+            "trustworthy", "friendly", "smart", "fair", "identity"]
+  ids.forEach((id) => {
+    data += id + ","
+    data += $("#" + id + ":checked").val()
+    data += "\n"
+  })
+  return data
+}
+
+function endGame() {
   $("#game").hide()
   $("#postgame").show()
 }
