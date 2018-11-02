@@ -40,6 +40,7 @@ function sendmessage(trial) {
 
 
 // GAME LOGIC
+// Do not change things below this line
 
 // Stores all results from all rounds
 var results = []
@@ -51,12 +52,14 @@ var trial = 0
 var t1 = 0
 var t2 = 0
 
+// two params, min and a max, returns an inclusive random number
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
+// takes in red yellow or green, changes the stoplight color to that color
 function changeLight(color) {
   let path = 'images/' + color + '.jpg'
   $("#stoplight").attr('src', path)
@@ -89,6 +92,7 @@ function updatePoints(actor, amount) {
 function tokenMenuMaker() {
   $(".tokenmenu").empty()
   var html =""
+  // creates buttons for each available amount of tokens to spend
   for(let i = 1 ; i <= player.tokens ; i++){
     if (i === 1) {
       $(".tokenmenu").append("<a class='dropdown-item' href='#'>1 Token</a>")
@@ -96,7 +100,8 @@ function tokenMenuMaker() {
       $(".tokenmenu").append("<a class='dropdown-item' href='#'>" + i + " Tokens</a>")
     }
   }
-
+  
+  // reinitialize the event listener
   $("#spendtoken a").one('click', function () {   
     t2 = Date.now()
     let amount = $(this).index()+1
@@ -108,6 +113,7 @@ function tokenMenuMaker() {
     postAction()
   })
 
+  // reinitialize the event listener
   $("#cashintoken a").one('click', function () {
     t2 = Date.now()
     let amount = $(this).index()+1
@@ -120,6 +126,7 @@ function tokenMenuMaker() {
   })
 }
 
+// helper function to run the postaction things, logging results, hiding the modal, running the next round
 function postAction() {
   $("#winModal").modal('hide')
   result.playerposttokens = player.tokens
@@ -130,11 +137,11 @@ function postAction() {
   startRound()
 }
 
-// computerWin works off the of the dictionary supplied by the researcher, a set win amount and action for each round the computer wins
+// computerWin works off the of the javascript object supplied by the researcher, a set win amount and action for each round the computer wins
 function computerWin(action, amount) {
-  // TODO: Announce computer action
   result.action = action
   var points = 0
+  
   if (action === "save") {
     updateTokens(com, 1)
     result.amount = 0
@@ -161,19 +168,22 @@ function computerWin(action, amount) {
   result.playerpostpoints = player.points
   result.computerposttokens = com.tokens
   result.computerpostpoints = com.points
-  
 
   startRound()
 }
 
+// helper function that runs the round
 function startRound() {
+  // push last rounds results
   results.push(result)
   
   result = {}
+  // if game is over, defined if the computer has no more preset moves
   if (computerPlay.length === trial) {
     $("#game").hide()
     $("#postgame").show()
   }
+  // set up random delays for the stoplight
   let interval1 = getRandomIntInclusive(750, 1250)
   let interval2 = getRandomIntInclusive(750, 1250)
   interval2 += interval1
@@ -182,23 +192,28 @@ function startRound() {
   setTimeout(changeLight, interval2, ["green"])
 }
 
-
+// runs when the document is loading, used to inistalize click event listeners and other variables
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
   $("#pregame").show()
 
   // set com name
   $("#comname").text(computerName)
+
+  // uncomment this code if you want a form buton in the preform to change the computers name
   // $('#comdrop').change(function () {
   //   $("#comname").text($('#comdrop option:selected').text())
   //   result.comname = $('#comdrop option:selected').text()
   // })  
+
+  // button in modal that will record a message sent by the user
   $("#sendmessage").click(function () {
     var text = $("#message").val()
     result.message = text
     $("#textmodal").modal("hide")
   })
-  console.log("savetoken init")
+
+  // save token button, doesnt need to be initialized with the other modal buttons because it never changes
   $("#savetoken").on("click", function () {
     result.action = "save"
     result.amount = 0
@@ -210,24 +225,25 @@ $(document).ready(function () {
     }
   })
 
+  // form submit for the inital form 
   $("#formsubmit").click(function () {
     $("#playername").text($("#name").val())
     result.playername = $("#name").val()
     result.id = $("#id").val()
     result.expirimenter = $("#expirimenter").val()
+    // hide pregame and start the real game
     $("#pregame").hide()
     $("#game").show()
     $("#readyModal").modal("show")
   })
 
-  // button when the user is ready to play
+  // button when the user is ready to play, starts the first round
   $("#readybutton").click(function() {
     $("#readyModal").modal("hide")
     startRound()
   })
 
   // initialize dynamic HTML parts
-
   $("#playerpoints").text(player.points)
   $("#compoints").text(com.points)
   updateTokens(player)
@@ -236,12 +252,15 @@ $(document).ready(function () {
 
   // button clicked (supposedly) after light is green and round has started, user either wins/loses based on this button
   $("#gobutton").click(function () {
+    // reset lose text
     $("#loseMessage").text("Waiting for the other player to make a decision...")
+    // safegaurd if the user presses go too quickly
     if ($("#stoplight").attr('src') !== "images/green.jpg") {
       alert("You clicked too early! Try again")
       return
     }
 
+    // log results
     var responseTime = Date.now() - greenTime
     result.responseTime = responseTime
     result.playerpretokens = player.tokens
@@ -254,7 +273,9 @@ $(document).ready(function () {
       result.winner = "computer"
       // computer wins
       $("#loseModal").modal("show")
+      // set delay to make computer look natural
       let tout = getRandomIntInclusive(2000, 3800)
+      // -1000 here so we can show the "chose to X" message
       window.setTimeout(
         computerWin,
         tout-1000,
@@ -279,16 +300,20 @@ $(document).ready(function () {
     result.trial = trial
     trial++
 
+    // show modal to send a message if the flag is true
     if (sendmessage(trial)) {
       $("#textmodal").modal("show")
     }
 
   })
 
+  // post game submit button
   $("#postgamesubmit").click(function () {
     let ids = ["frustrated", "happy", "confident", "angry", "satisfied", "confused",
             "trustworthy", "friendly", "smart", "fair", "identity"]
     let trigger = false
+
+    // if any field is undefined, dont submit the form
     ids.forEach((id) => {
       if ($("#" + id + ":checked").val() == undefined) {
         trigger = true
@@ -298,11 +323,13 @@ $(document).ready(function () {
       alert("Please fill in all of the answers")
       return
     }
+    // first line of the CSV
     let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
   
     data += format(results)
     data += getPostGameForm()
 
+    // auto-download the CSV
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
     hiddenElement.target = '_blank';
@@ -313,6 +340,7 @@ $(document).ready(function () {
   })
 })
 
+// formats the results of the trial into a CSV format
 function format(results) {
   var csv = 'Trial,Outcome,Winner,Response Time,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
           Player Points Post-Response, Player Text, Computer Points Pre-response, Computer Points post-response\n'
@@ -325,6 +353,7 @@ function format(results) {
   return csv
 }
 
+// formats the results of the post game form into a CSV format
 function getPostGameForm() {
   data = "\n Post Game Form Answers \n"
   let ids = ["frustrated", "happy", "confident", "angry", "satisfied", "confused",
