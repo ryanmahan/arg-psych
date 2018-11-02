@@ -16,7 +16,7 @@ var com = {
 // changing this number can cause issues with the display of the token bank
 // FIXME: Display issues with token bank with variable token amounts, low priority
 const maxTokens = 5
-computerName = "Dorothy"
+computerName = "Devon"
 
 // list of dictionaries with the win rate of the computer, and the action/amount that the computer takes
 var computerPlay = [
@@ -138,6 +138,7 @@ function computerWin(action, amount) {
   if (action === "save") {
     updateTokens(com, 1)
     result.amount = 0
+    $("#loseMessage").text("Devon decided to save a token.")
   }
     
   if (action === "cashin") {
@@ -145,6 +146,7 @@ function computerWin(action, amount) {
     updateTokens(com, amount * -1)
     updatePoints(com, points)
     result.amount = amount
+    $("#loseMessage").text("Devon decided to cash in a token.")
   }
     
   if (action === "spend") {
@@ -152,22 +154,25 @@ function computerWin(action, amount) {
     updateTokens(com, (amount-1) * -1)
     updatePoints(player, points * -1)
     result.amount = (amount-1) * -1
+    $("#loseMessage").text("Devon decided to spend a token.")
   }
+
   result.playerposttokens = player.tokens
   result.playerpostpoints = player.points
   result.computerposttokens = com.tokens
   result.computerpostpoints = com.points
   
+
   startRound()
 }
 
 function startRound() {
   results.push(result)
+  
   result = {}
   if (computerPlay.length === trial) {
-    // TODO Post-game form
-    console.log(results)
-    endGame()
+    $("#game").hide()
+    $("#postgame").show()
   }
   let interval1 = getRandomIntInclusive(750, 1250)
   let interval2 = getRandomIntInclusive(750, 1250)
@@ -180,7 +185,7 @@ function startRound() {
 
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
-  $("#postgame").show()
+  $("#pregame").show()
 
   // set com name
   $("#comname").text(computerName)
@@ -188,9 +193,24 @@ $(document).ready(function () {
   //   $("#comname").text($('#comdrop option:selected').text())
   //   result.comname = $('#comdrop option:selected').text()
   // })  
+  $("#sendmessage").click(function () {
+    var text = $("#message").val()
+    result.message = text
+    $("#textmodal").modal("hide")
+  })
+  console.log("savetoken init")
+  $("#savetoken").on("click", function () {
+    result.action = "save"
+    result.amount = 0
+    t2 = Date.now()
+    if (player.tokens >= maxTokens) {
+      alert("Your bank is full")
+    } else {
+      postAction()
+    }
+  })
 
   $("#formsubmit").click(function () {
-    // TODO: Save variables from this
     $("#playername").text($("#name").val())
     result.playername = $("#name").val()
     result.id = $("#id").val()
@@ -216,6 +236,7 @@ $(document).ready(function () {
 
   // button clicked (supposedly) after light is green and round has started, user either wins/loses based on this button
   $("#gobutton").click(function () {
+    $("#loseMessage").text("Waiting for the other player to make a decision...")
     if ($("#stoplight").attr('src') !== "images/green.jpg") {
       alert("You clicked too early! Try again")
       return
@@ -229,20 +250,21 @@ $(document).ready(function () {
     result.computerprepoints = com.points
 
     // computerPlay set up in dictionary, plus response time over 1 sec is a loss
-    // TODO: Logic for action > 1sec response time that doesnt mess up researcher set dictionary (get token spend token)
     if (computerPlay[trial].win || responseTime > 1200) {
       result.winner = "computer"
       // computer wins
       $("#loseModal").modal("show")
-      let tout = getRandomIntInclusive(1000, 2500)
+      let tout = getRandomIntInclusive(2000, 3800)
       window.setTimeout(
         computerWin,
-        tout,
+        tout-1000,
         computerPlay[trial].action,
         computerPlay[trial].amount
       )
       window.setTimeout(
-        () => {$("#loseModal").modal("hide")},
+        () => {
+          $("#loseModal").modal("hide")
+      },
         tout
       )
       changeLight("red")
@@ -257,30 +279,25 @@ $(document).ready(function () {
     result.trial = trial
     trial++
 
-    $("#savetoken").one('click', function () {
-      result.action = "save"
-      result.amount = 0
-      t2 = Date.now()
-      if (player.tokens >= maxTokens) {
-        alert("Your bank is full")
-      } else {
-        postAction()
-      }
-    })
-
     if (sendmessage(trial)) {
       $("#textmodal").modal("show")
     }
 
-    $("#sendmessage").click(function () {
-      var text = $("#message").val()
-      result.message = text
-      $("#textmodal").modal("hide")
-    })
-
   })
 
   $("#postgamesubmit").click(function () {
+    let ids = ["frustrated", "happy", "confident", "angry", "satisfied", "confused",
+            "trustworthy", "friendly", "smart", "fair", "identity"]
+    let trigger = false
+    ids.forEach((id) => {
+      if ($("#" + id + ":checked").val() == undefined) {
+        trigger = true
+      }
+    })
+    if (trigger) {
+      alert("Please fill in all of the answers")
+      return
+    }
     let data = results[0].playername + ',' + results[0].id + ',' + results[0].expirimenter + "\n"
   
     data += format(results)
@@ -291,11 +308,13 @@ $(document).ready(function () {
     hiddenElement.target = '_blank';
     hiddenElement.download = results[0].id + '.csv';
     hiddenElement.click();
+    $("#postgame").hide()
+    $("#debriefing").show()
   })
 })
 
 function format(results) {
-  var csv = 'Trial,Outcome,Response Time,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
+  var csv = 'Trial,Outcome,Winner,Response Time,Player Tokens Pre-response, Player Tokens Post-response, Player Points Pre-response, \
           Player Points Post-Response, Player Text, Computer Points Pre-response, Computer Points post-response\n'
 
   results.forEach(function(result) {
@@ -317,9 +336,3 @@ function getPostGameForm() {
   })
   return data
 }
-
-function endGame() {
-  $("#game").hide()
-  $("#postgame").show()
-}
-
