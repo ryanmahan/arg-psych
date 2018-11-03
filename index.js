@@ -234,7 +234,7 @@ $(document).ready(function () {
     // hide pregame and start the real game
     $("#pregame").hide()
     $("#game").show()
-    $("#readyModal").modal("show")
+    $("#readyModal").modal({backdrop: 'static', keyboard: false})
   })
 
   // button when the user is ready to play, starts the first round
@@ -272,7 +272,7 @@ $(document).ready(function () {
     if (computerPlay[trial].win || responseTime > 1200) {
       result.winner = "computer"
       // computer wins
-      $("#loseModal").modal("show")
+      $("#loseModal").modal({backdrop: 'static', keyboard: false})
       // set delay to make computer look natural
       let tout = getRandomIntInclusive(2000, 3800)
       // -1000 here so we can show the "chose to X" message
@@ -294,7 +294,7 @@ $(document).ready(function () {
       result.winner = "participant"
       updateTokens(player, 1)
       t1 = Date.now()
-      $("#winModal").modal('show')
+      $("#winModal").modal({backdrop: 'static', keyboard: false})
       changeLight("red")
     }
     result.trial = trial
@@ -302,7 +302,7 @@ $(document).ready(function () {
 
     // show modal to send a message if the flag is true
     if (sendmessage(trial)) {
-      $("#textmodal").modal("show")
+      $("#textmodal").modal({backdrop: 'static', keyboard: false})
     }
 
   })
