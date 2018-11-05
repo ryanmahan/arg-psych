@@ -334,7 +334,9 @@ $(document).ready(function () {
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
     hiddenElement.target = '_blank';
     hiddenElement.download = results[0].id + '.csv';
+    document.body.appendChild(hiddenElement);
     hiddenElement.click();
+    hiddenElement.remove();
     $("#postgame").hide()
     $("#debriefing").show()
   })
