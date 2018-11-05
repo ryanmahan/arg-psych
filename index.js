@@ -80,6 +80,15 @@ function updateTokens(actor, amount=0) {
   tokenMenuMaker()
 }
 
+// updates HTML for conversion table
+function createConversionTable() {
+  let html = "<h5>"
+  for(i = 1 ; i <= maxTokens ; i++) {
+    html += i + " X <img class='token' src='images/token.png'/> = " + tokenConversion(i) + "<br>" 
+  }
+  return html + "</h5>"
+}
+
 // updates actor's points by x amount, and updates HTML
 function updatePoints(actor, amount) {
   actor.points += amount
@@ -196,7 +205,7 @@ function startRound() {
 $(document).ready(function () {
   // show form and take in variables inputted by researcher
   $("#pregame").show()
-
+  $(".conversions").html(createConversionTable())
   // set com name
   $("#comname").text(computerName)
 
