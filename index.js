@@ -52,6 +52,8 @@ var trial = 0
 var t1 = 0
 var t2 = 0
 
+var hiddenElement = document.createElement('a');
+
 // two params, min and a max, returns an inclusive random number
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -222,6 +224,12 @@ $(document).ready(function () {
     $("#textmodal").modal("hide")
   })
 
+  // button to download CSV
+  $("#downloadbtn").click(function () {
+    hiddenElement.click();
+    hiddenElement.remove();
+  })
+
   // save token button, doesnt need to be initialized with the other modal buttons because it never changes
   $("#savetoken").on("click", function () {
     result.action = "save"
@@ -339,13 +347,11 @@ $(document).ready(function () {
     data += getPostGameForm()
 
     // auto-download the CSV
-    var hiddenElement = document.createElement('a');
+    
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
     hiddenElement.target = '_blank';
     hiddenElement.download = results[0].id + '.csv';
     document.body.appendChild(hiddenElement);
-    hiddenElement.click();
-    hiddenElement.remove();
     $("#postgame").hide()
     $("#debriefing").show()
   })
